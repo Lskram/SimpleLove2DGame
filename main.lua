@@ -13,6 +13,9 @@ local meat = {
     scale = 0.08
 }
 
+local score = 0
+local level = 1
+
 function love.load()
     -- โหลดรูปภาพของ player และ meat
     player.image = love.graphics.newImage("player.png")
@@ -39,6 +42,14 @@ function love.update(dt)
 
     -- ตรวจสอบการชนกันระหว่าง player และ meat
     if CheckCollision(player.x, player.y, player.image:getWidth() * player.scale, player.image:getHeight() * player.scale, meat.x, meat.y, meat.image:getWidth() * meat.scale, meat.image:getHeight() * meat.scale) then
+        -- เพิ่มคะแนน
+        score = score + 100
+        if score >= 1000 then
+            score = 0
+            level = level + 1
+            player.scale = player.scale + 0.01  -- เพิ่มขนาดตัวละคร
+        end
+
         -- เพิ่มความเร็วให้ player และสุ่มตำแหน่งใหม่ให้ meat
         player.speed = player.speed + 15
         meat.x = math.random(0, love.graphics.getWidth() - meat.image:getWidth() * meat.scale)
@@ -53,8 +64,9 @@ function love.draw()
     -- วาดภาพ meat ที่ตำแหน่ง (meat.x, meat.y) และปรับขนาดภาพ
     love.graphics.draw(meat.image, meat.x, meat.y, 0, meat.scale, meat.scale)
 
-    -- พิมพ์ข้อความ "Hello, Love2D!" ที่ตำแหน่ง (400, 300)
-    love.graphics.print("Hello, Love2D!", 400, 300)
+    -- แสดงคะแนนและเลเวล
+    love.graphics.print("Score: " .. score, 10, 10)
+    love.graphics.print("Level: " .. level, 10, 30)
 end
 
 -- ฟังก์ชันตรวจสอบการชนกัน
