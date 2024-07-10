@@ -55,6 +55,19 @@ function love.update(dt)
         meat.x = math.random(0, love.graphics.getWidth() - meat.image:getWidth() * meat.scale)
         meat.y = math.random(0, love.graphics.getHeight() - meat.image:getHeight() * meat.scale)
     end
+
+    -- ตรวจสอบตำแหน่งของ player เพื่อวนกลับมาที่อีกฝั่ง
+    if player.x > love.graphics.getWidth() then
+        player.x = 0
+    elseif player.x < 0 then
+        player.x = love.graphics.getWidth()
+    end
+
+    if player.y > love.graphics.getHeight() then
+        player.y = 0
+    elseif player.y < 0 then
+        player.y = love.graphics.getHeight()
+    end
 end
 
 function love.draw()
